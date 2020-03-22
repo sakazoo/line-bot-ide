@@ -14,19 +14,19 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 @SpringBootApplication
 @LineMessageHandler
 public class EchoApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(EchoApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(EchoApplication.class, args);
+  }
 
-    @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        System.out.println("event: " + event);
-        final String originalMessageText = event.getMessage().getText();
-        return new TextMessage(originalMessageText);
-    }
+  @EventMapping
+  public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    System.out.println("event: " + event);
+    final String originalMessageText = event.getMessage().getText();
+    return new TextMessage(originalMessageText);
+  }
 
-    @EventMapping
-    public void handleDefaultMessageEvent(Event event) {
-        System.out.println("event: " + event);
-    }
+  @EventMapping
+  public void handleDefaultMessageEvent(Event event) {
+    System.out.println("event: " + event);
+  }
 }
