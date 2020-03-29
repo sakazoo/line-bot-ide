@@ -9,9 +9,19 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+}
+
 dependencies {
 	implementation 'com.linecorp.bot:line-bot-spring-boot:3.3.1'
-	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	testImplementation "org.springframework.boot:spring-boot-starter-test"
 }
