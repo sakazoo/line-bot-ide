@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/task")
 public class NoticeGarbageOutTask {
   private static final Logger log = LoggerFactory.getLogger(NoticeGarbageOutTask.class);
 
@@ -61,7 +61,7 @@ public class NoticeGarbageOutTask {
     }
   }
 
-  @GetMapping("/callNotification")
+  @GetMapping("/call/wed")
   @ResponseStatus(HttpStatus.OK)
   public String callNotification() {
     notify3();
