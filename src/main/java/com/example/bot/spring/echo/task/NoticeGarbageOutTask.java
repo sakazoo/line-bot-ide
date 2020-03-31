@@ -7,11 +7,18 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 import java.util.concurrent.ExecutionException;
 
+@RestController
+@RequestMapping()
 public class NoticeGarbageOutTask {
   private static final Logger log = LoggerFactory.getLogger(NoticeGarbageOutTask.class);
 
@@ -27,14 +34,19 @@ public class NoticeGarbageOutTask {
     log.info("exec garbage notify");
     BotApiResponse response = null;
     try {
-      response = lineMessagingClient.broadcast(new Broadcast(Collections.singletonList(new TextMessage("明日は資源ごみの日です。")), false)).get();
+      response =
+          lineMessagingClient
+              .broadcast(
+                  new Broadcast(
+                      Collections.singletonList(new TextMessage("明日は水曜日です。\n資源ごみをお忘れなく！")), false))
+              .get();
       log.info("sent messages: {}", response);
     } catch (InterruptedException | ExecutionException e) {
       log.error("failed to send message: {}", "明日は資源ごみの日です。", e);
     }
   }
 
-  @Scheduled(cron = "0,10,20,30,40,50 * * * * MON-FRI", zone = "Asia/Tokyo")
+  @Scheduled(cron = "0 * * * * MON-FRI", zone = "Asia/Tokyo")
   public void test() {
 
     TextMessage textMessage = new TextMessage("hello");
@@ -47,5 +59,12 @@ public class NoticeGarbageOutTask {
     } catch (InterruptedException | ExecutionException e) {
       log.error("failed to send message: {}", "hello", e);
     }
+  }
+
+  @GetMapping("/callNotification")
+  @ResponseStatus(HttpStatus.OK)
+  public String callNotification() {
+    notify3();
+    return "ok";
   }
 }
