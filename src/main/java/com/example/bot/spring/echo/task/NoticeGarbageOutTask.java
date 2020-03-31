@@ -46,7 +46,7 @@ public class NoticeGarbageOutTask {
     }
   }
 
-  @Scheduled(cron = "0 * * * * MON-FRI", zone = "Asia/Tokyo")
+  // @Scheduled(cron = "0 * * * * MON-FRI", zone = "Asia/Tokyo")
   public void test() {
 
     TextMessage textMessage = new TextMessage("hello");
