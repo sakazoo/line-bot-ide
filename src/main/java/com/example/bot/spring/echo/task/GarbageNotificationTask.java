@@ -40,7 +40,8 @@ public class GarbageNotificationTask {
   @Scheduled(cron = "0 0 23 * * MON-FRI", zone = "Asia/Tokyo")
   public void notifyGarbage() throws Exception {
     ZonedDateTime dateTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Tokyo"));
-    GarbageType garbageType = garbageNotificationService.getGarbageType(dateTime);
+    //  need to know dayOfWeek of tomorrow's garbageType
+    GarbageType garbageType = garbageNotificationService.getGarbageType(dateTime.plusDays(1));
     if(GarbageType.NONE == garbageType){
       return;
     }
@@ -58,7 +59,7 @@ public class GarbageNotificationTask {
     }
   }
 
-  @GetMapping("/call/garbage/notify")
+  @GetMapping("/call/garbage")
   @ResponseStatus(HttpStatus.OK)
   public String callNotification() throws Exception {
     notifyGarbage();
