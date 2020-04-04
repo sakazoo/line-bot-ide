@@ -40,7 +40,7 @@ public class GarbageNotificationTask {
   @Scheduled(cron = "0 0 23 * * MON-FRI", zone = "Asia/Tokyo")
   public void notifyGarbage() throws Exception {
     ZonedDateTime dateTime = ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("Asia/Tokyo"));
-    //  need to know dayOfWeek of tomorrow's garbageType
+    //  need to know garbageType of tomorrow's dayOfWeek
     GarbageType garbageType = garbageNotificationService.getGarbageType(dateTime.plusDays(1));
     if(GarbageType.NONE == garbageType){
       return;
