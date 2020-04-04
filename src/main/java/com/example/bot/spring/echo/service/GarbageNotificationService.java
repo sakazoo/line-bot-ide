@@ -26,7 +26,7 @@ public class GarbageNotificationService {
           return GarbageType.NONE;
         }
       default:
-        throw new Exception("failed to get garbageType");
+        return GarbageType.NONE;
     }
   }
 }
