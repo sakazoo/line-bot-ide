@@ -43,6 +43,7 @@ public class GarbageNotificationTask {
     //  need to know garbageType of tomorrow's dayOfWeek
     GarbageType garbageType = garbageNotificationService.getGarbageType(dateTime.plusDays(1));
     if(GarbageType.NONE == garbageType){
+      log.info("tomorrow is not garbage day");
       return;
     }
     log.info("exec {} garbage notify", garbageType.name().toLowerCase());
