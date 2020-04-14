@@ -16,13 +16,13 @@ public class LineEventHandler {
 
   @EventMapping
   public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-    log.info("event: " + event);
+    log.info("event: {}, userId: {}", event, event.getSource().getUserId());
     final String originalMessageText = event.getMessage().getText();
     return new TextMessage(originalMessageText);
   }
 
   @EventMapping
   public void handleDefaultMessageEvent(Event event) {
-    log.info("event: " + event);
+    log.info("event: {}, userId: {}", event, event.getSource().getUserId());
   }
 }
