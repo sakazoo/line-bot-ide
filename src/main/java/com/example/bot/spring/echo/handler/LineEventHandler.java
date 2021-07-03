@@ -1,5 +1,7 @@
-package com.example.bot.spring.echo.event;
+package com.example.bot.spring.echo.handler;
 
+import com.example.bot.spring.echo.model.ReplyType;
+import com.example.bot.spring.echo.service.ReplyMessageService;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -14,11 +16,20 @@ import org.slf4j.LoggerFactory;
 public class LineEventHandler {
   private static final Logger log = LoggerFactory.getLogger(LineMessageHandler.class);
 
+  private final ReplyMessageService replyMessageService;
+
+  public LineEventHandler(ReplyMessageService replyMessageService) {
+    this.replyMessageService = replyMessageService;
+  }
+
   @EventMapping
   public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
     log.info("event: {}, userId: {}", event, event.getSource().getUserId());
-    final String originalMessageText = event.getMessage().getText();
-    return new TextMessage(originalMessageText);
+    String messageText = event.getMessage().getText();
+    if (ReplyType.PRAISE.getText().equals(messageText)) {
+      messageText = replyMessageService.getReplyMessage(ReplyType.PRAISE);
+    }
+    return new TextMessage(messageText);
   }
 
   @EventMapping
