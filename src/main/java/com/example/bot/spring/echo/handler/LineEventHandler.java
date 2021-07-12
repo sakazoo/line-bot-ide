@@ -5,12 +5,15 @@ import com.example.bot.spring.echo.service.ReplyMessageService;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.ImageMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URI;
 
 @LineMessageHandler
 public class LineEventHandler {
@@ -27,11 +30,14 @@ public class LineEventHandler {
     log.info("event: {}, userId: {}", event, event.getSource().getUserId());
     String messageText = event.getMessage().getText();
     if (ReplyType.PRAISE.getText().equals(messageText)) {
-      messageText = replyMessageService.getPraiseReplyMessage(ReplyType.PRAISE);
+      String praiseMessage = replyMessageService.getPraiseReplyMessage(ReplyType.PRAISE);
+      return new TextMessage(praiseMessage);
     } else if (ReplyType.CAT_IMAGE.getText().equals(messageText)) {
-      messageText = replyMessageService.getCatImage();
+      URI url = URI.create(replyMessageService.getCatImage());
+      return new ImageMessage(url, url);
+    }else {
+      return new TextMessage(messageText);
     }
-    return new TextMessage(messageText);
   }
 
   @EventMapping
