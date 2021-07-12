@@ -1,7 +1,8 @@
 package com.example.bot.spring.echo.model;
 
 public enum ReplyType {
-  PRAISE("褒めて");
+  PRAISE("褒めて"),
+  CAT_IMAGE("にゃーん");
 
   private String text;
 

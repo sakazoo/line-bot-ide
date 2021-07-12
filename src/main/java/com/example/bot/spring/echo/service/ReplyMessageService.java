@@ -2,11 +2,18 @@ package com.example.bot.spring.echo.service;
 
 import com.example.bot.spring.echo.model.ReplyType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 @Service
 public class ReplyMessageService {
+
+  private RestTemplate restTemplate;
+
+  public ReplyMessageService(RestTemplate restTemplate) {
+    this.restTemplate = restTemplate;
+  }
 
   private static final Map<ReplyType, Set<String>> REPLY_MESSAGE = new HashMap<>();
   private static final Set<String> PRAISE_MESSAGES = new HashSet<>(Arrays.asList(
@@ -32,9 +39,13 @@ public class ReplyMessageService {
     REPLY_MESSAGE.put(ReplyType.PRAISE, PRAISE_MESSAGES);
   }
 
-  public String getReplyMessage(ReplyType replyType) {
+  public String getPraiseReplyMessage(ReplyType replyType) {
     Set<String> messageSet = REPLY_MESSAGE.get(replyType);
     return getRandomMessage(messageSet);
+  }
+
+  public String getCatImage() {
+    return restTemplate.getForObject("https://aws.random.cat/meow", String.class);
   }
 
   private String getRandomMessage(Set<String> set) {

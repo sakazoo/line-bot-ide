@@ -27,7 +27,9 @@ public class LineEventHandler {
     log.info("event: {}, userId: {}", event, event.getSource().getUserId());
     String messageText = event.getMessage().getText();
     if (ReplyType.PRAISE.getText().equals(messageText)) {
-      messageText = replyMessageService.getReplyMessage(ReplyType.PRAISE);
+      messageText = replyMessageService.getPraiseReplyMessage(ReplyType.PRAISE);
+    } else if (ReplyType.CAT_IMAGE.getText().equals(messageText)) {
+      messageText = replyMessageService.getCatImage();
     }
     return new TextMessage(messageText);
   }
