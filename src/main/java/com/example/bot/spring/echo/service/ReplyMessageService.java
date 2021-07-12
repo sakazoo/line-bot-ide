@@ -1,5 +1,6 @@
 package com.example.bot.spring.echo.service;
 
+import com.example.bot.spring.echo.model.CatImage;
 import com.example.bot.spring.echo.model.ReplyType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,7 +46,8 @@ public class ReplyMessageService {
   }
 
   public String getCatImage() {
-    return restTemplate.getForObject("https://aws.random.cat/meow", String.class);
+    CatImage catImage = restTemplate.getForObject("https://aws.random.cat/meow", CatImage.class);
+    return catImage.getFile();
   }
 
   private String getRandomMessage(Set<String> set) {
