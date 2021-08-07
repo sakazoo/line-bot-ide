@@ -43,7 +43,7 @@ public class LineEventHandler {
     } catch (Exception e) {
       log.error("something error occurred.", e);
       List<Message> errorReplayMessageList = new ArrayList<>();
-      Message echoMessage = new TextMessage("Botは混乱しているみたいです。。");
+      Message echoMessage = new TextMessage(ERROR_REPLY_MESSAGE);
       URI errorImageUrl = URI.create(ERROR_IMAGE_URL);
       Message imageMessage = new ImageMessage(errorImageUrl, errorImageUrl);
       errorReplayMessageList.add(echoMessage);
