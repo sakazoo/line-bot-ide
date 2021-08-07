@@ -19,11 +19,6 @@ public class GlobalExceptionController implements ErrorController {
   @Value("${server.error.path:/globalError}")
   private String errorPath;
 
-  @Override
-  public String getErrorPath() {
-    return errorPath;
-  }
-
   @RequestMapping("${server.error.path:/globalError}")
   public String error(HttpServletRequest httpServletRequest) {
     String requestURI = (String) httpServletRequest.getAttribute(WebUtils.FORWARD_REQUEST_URI_ATTRIBUTE);

@@ -1,8 +1,12 @@
 package com.example.bot.spring.echo.service;
 
+import com.example.bot.spring.echo.exception.ImageNotFoundException;
 import com.example.bot.spring.echo.model.CatImage;
 import com.example.bot.spring.echo.model.ReplyType;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -36,6 +40,7 @@ public class ReplyMessageService {
           "肌が綺麗だね。まるで赤ちゃんみたい。",
           "そのままでも十分かわいいよ"
   ));
+
   static {
     REPLY_MESSAGE.put(ReplyType.PRAISE, PRAISE_MESSAGES);
   }
@@ -45,8 +50,12 @@ public class ReplyMessageService {
     return getRandomMessage(messageSet);
   }
 
+  @Retryable(value = HttpServerErrorException.class, maxAttempts = 2, backoff = @Backoff(delay = 100))
   public String getCatImage() {
     CatImage catImage = restTemplate.getForObject("https://aws.random.cat/meow", CatImage.class);
+    if(catImage == null){
+      throw new ImageNotFoundException("CatImage API has no image url.");
+    }
     return catImage.getFile();
   }
 
