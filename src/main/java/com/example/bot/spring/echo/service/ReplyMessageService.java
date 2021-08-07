@@ -50,7 +50,7 @@ public class ReplyMessageService {
     return getRandomMessage(messageSet);
   }
 
-  @Retryable(value = HttpServerErrorException.class, maxAttempts = 3, backoff = @Backoff(delay = 500))
+  @Retryable(value = HttpServerErrorException.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
   public String getCatImage() {
     CatImage catImage = restTemplate.getForObject("https://aws.random.cat/meow", CatImage.class);
     if(catImage == null){
