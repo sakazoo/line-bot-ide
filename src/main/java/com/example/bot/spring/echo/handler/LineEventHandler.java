@@ -46,6 +46,8 @@ public class LineEventHandler {
       Message echoMessage = new TextMessage("Botは混乱しているみたいです。。");
       URI errorImageUrl = URI.create(ERROR_IMAGE_URL);
       Message imageMessage = new ImageMessage(errorImageUrl, errorImageUrl);
+      errorReplayMessageList.add(echoMessage);
+      errorReplayMessageList.add(imageMessage);
       return errorReplayMessageList;
     }
   }
