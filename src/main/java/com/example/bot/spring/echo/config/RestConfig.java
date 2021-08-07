@@ -17,7 +17,6 @@ public class RestConfig {
     return new RestTemplate(clientHttpRequestFactory());
   }
 
-
   @Bean
   public ClientHttpRequestFactory clientHttpRequestFactory() {
     PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();

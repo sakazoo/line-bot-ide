@@ -14,10 +14,10 @@ public class AppConfig {
   private static final Logger log = LoggerFactory.getLogger(AppConfig.class);
 
   @Bean
-  public ThreadPoolTaskScheduler  taskScheduler(){
+  public ThreadPoolTaskScheduler taskScheduler() {
     ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
     taskScheduler.setPoolSize(3);
     taskScheduler.setRejectedExecutionHandler((r, executor) -> log.error("task scheduler error occurred.", r));
-    return  taskScheduler;
+    return taskScheduler;
   }
 }
