@@ -7,3 +7,6 @@
 server:
   error:
     path: /globalError
+
+cat-api:
+  url: https://api.thecatapi.com/v1/images/search
