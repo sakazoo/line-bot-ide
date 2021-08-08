@@ -1,5 +1,6 @@
 package com.example.bot.spring.echo.service;
 
+import com.example.bot.spring.echo.config.CatApiConfiguration;
 import com.example.bot.spring.echo.exception.ImageNotFoundException;
 import com.example.bot.spring.echo.model.CatImage;
 import com.example.bot.spring.echo.model.ReplyType;
@@ -8,15 +9,19 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
 @Service
 public class ReplyMessageService {
 
+  private CatApiConfiguration catApiConfiguration;
+
   private RestTemplate restTemplate;
 
-  public ReplyMessageService(RestTemplate restTemplate) {
+  public ReplyMessageService(CatApiConfiguration catApiConfiguration, RestTemplate restTemplate) {
+    this.catApiConfiguration = catApiConfiguration;
     this.restTemplate = restTemplate;
   }
 
@@ -52,11 +57,15 @@ public class ReplyMessageService {
 
   @Retryable(value = HttpServerErrorException.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
   public String getCatImage() {
-    CatImage catImage = restTemplate.getForObject("https://aws.random.cat/meow", CatImage.class);
-    if(catImage == null){
+    UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(catApiConfiguration.getUrl())
+            .queryParam("size", "thumb")
+            .queryParam("limit", 1)
+            .queryParam("api_key", catApiConfiguration.getKey());
+    CatImage catImage = restTemplate.getForObject(uriComponentsBuilder.toUriString(), CatImage.class);
+    if (catImage == null) {
       throw new ImageNotFoundException("CatImage API has no image url.");
     }
-    return catImage.getFile();
+    return catImage.getUrl();
   }
 
   private String getRandomMessage(Set<String> set) {

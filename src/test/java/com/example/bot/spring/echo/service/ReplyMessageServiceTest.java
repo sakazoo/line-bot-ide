@@ -59,12 +59,12 @@ class ReplyMessageServiceTest {
   void getCatImage_success() {
     String url = "http://localhost:8080/image";
     CatImage expectedResult = new CatImage();
-    expectedResult.setFile(url);
+    expectedResult.setUrl(url);
     Mockito.when(restTemplate.getForObject(CAT_API_URL, CatImage.class))
             .thenReturn(expectedResult);
 
     String result = replyMessageService.getCatImage();
-    assertEquals(expectedResult.getFile(), result);
+    assertEquals(expectedResult.getUrl(), result);
   }
 
   @Test
