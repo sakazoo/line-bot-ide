@@ -61,11 +61,11 @@ public class ReplyMessageService {
             .queryParam("size", "thumb")
             .queryParam("limit", 1)
             .queryParam("api_key", catApiConfiguration.getKey());
-    CatImage catImage = restTemplate.getForObject(uriComponentsBuilder.toUriString(), CatImage.class);
-    if (catImage == null) {
+    CatImage[] catImage = restTemplate.getForObject(uriComponentsBuilder.toUriString(), CatImage[].class);
+    if (catImage == null || catImage.length != 1) {
       throw new ImageNotFoundException("CatImage API has no image url.");
     }
-    return catImage.getUrl();
+    return catImage[0].getUrl();
   }
 
   private String getRandomMessage(Set<String> set) {
